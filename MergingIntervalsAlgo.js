@@ -57,3 +57,4 @@ function mergeIntervals(intervals) {
   const mergedIntervals = mergeIntervals(intervals);
   console.log(mergedIntervals);
   
+  a
