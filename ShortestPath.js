@@ -23,6 +23,7 @@ Grocery Store to Post Office: 2 units
 Bank to Post Office: 4 units
 */
 
+/**
 function shortestRoute(cityMap, start) {
     const distances = {};
     for (let place in cityMap) {
@@ -64,3 +65,74 @@ const cityMap = {
 
 console.log(shortestRoute(cityMap, 'H'));
 
+**/
+
+const readline = require('readline');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function shortestRoute(cityMap, start) {
+    const distances = {};
+    for (let place in cityMap) {
+        distances[place] = Infinity;
+    }
+    distances[start] = 0;
+
+    const unvisited = new Set(Object.keys(cityMap));
+
+    while (unvisited.size > 0) {
+        let currentPlace = [...unvisited].reduce((a, b) => distances[a] < distances[b] ? a : b);
+
+        if (distances[currentPlace] === Infinity) break;
+
+        for (let [neighbor, distance] of cityMap[currentPlace]) {
+            let newDistance = distances[currentPlace] + distance;
+            if (newDistance < distances[neighbor]) {
+                distances[neighbor] = newDistance;
+            }
+        }
+
+        unvisited.delete(currentPlace);
+    }
+
+    return distances;
+}
+
+rl.question('Enter places separated by commas (e.g., H,G,B,P): ', placesInput => {
+    const places = placesInput.split(',');
+    const cityMap = {};
+
+    for (let place of places) {
+        cityMap[place] = [];
+    }
+
+    console.log("Enter routes in the format 'start,end,distance'. Type 'done' when finished.");
+
+    function askRoute() {
+        rl.question('Enter route: ', routeInput => {
+            if (routeInput === 'done') {
+                rl.question('Enter the starting place: ', start => {
+                    console.log(shortestRoute(cityMap, start));
+                    rl.close();
+                });
+                return;
+            }
+
+            const [start, end, distance] = routeInput.split(',');
+            cityMap[start].push([end, parseInt(distance)]);
+            askRoute();
+        });
+    }
+
+    askRoute();
+});
+
+/* The user first enters all the places in one go, separated by commas.
+The user then enters routes one by one in the format start,end,distance. 
+For example, H,G,5 means there's a route from Home (H) to Grocery Store (G) with a distance of 5 units.
+The user types done when they've finished entering routes.
+Finally, the user enters the starting place, and the program displays the shortest distances.
+*/
