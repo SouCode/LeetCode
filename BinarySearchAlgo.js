@@ -47,6 +47,7 @@ console.log(bookResult);
 */
 
 // Example #2
+// Searching for a book in a sorted list of book titles.
 
 function binarySearch(arr, target) {
     let left = 0;
