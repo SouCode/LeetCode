@@ -57,3 +57,4 @@ function twoSum(nums, target) {
 
 // Test the function with the example
 console.log(twoSum([2, 7, 11, 15], 9));  // Output: [0, 1]
+console.log(twoSum([1024, 2003, 2013, 2016], 8));
